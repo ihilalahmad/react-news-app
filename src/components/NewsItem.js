@@ -19,7 +19,8 @@ export class NewsItem extends Component {
 
           <div className="card-body">
             <h6>
-              Source: <span class="badge rounded-pill bg-danger">{source}</span>
+              Source:{" "}
+              <span className="badge rounded-pill bg-danger">{source}</span>
             </h6>
             <h5 className="card-title">{title}...</h5>
             <p className="card-text">{description}...</p>
@@ -27,8 +28,8 @@ export class NewsItem extends Component {
               Read more
             </a>
           </div>
-          <div class="card-footer">
-            <small class="text-muted">
+          <div className="card-footer">
+            <small className="text-muted">
               {new Date(publishedAt).toUTCString()}
             </small>
           </div>
