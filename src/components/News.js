@@ -10,15 +10,14 @@ const News = (props) => {
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
-  // document.title = props.category
-  // ? `${this.capitalizeFirstLetter(props.category)} - News App`
-  // : "News App";
-
-  // capitalizeFirstLetter = (word) => {
-  //   return word.charAt(0).toUpperCase() + word.slice(1);
-  // };
+  const capitalizeFirstLetter = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  };
 
   useEffect(() => {
+    document.title = props.category
+      ? `${capitalizeFirstLetter(props.category)} - News App`
+      : "News App";
     updateNews();
   }, []);
 
@@ -26,7 +25,8 @@ const News = (props) => {
     console.log("updated news");
     props.setProgress(10);
     const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=8147ba6e2b6d46cbb9d6d460e38995bb&page=${page}&pageSize=${props.pageSize}`;
-    this.setState({ loading: true });
+
+    setLoading(true);
     let data = await fetch(url);
     props.setProgress(30);
     let parsedData = await data.json();
@@ -38,24 +38,31 @@ const News = (props) => {
   };
 
   const fetchMoreData = async () => {
-    this.setState({ page: page + 1 });
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=8147ba6e2b6d46cbb9d6d460e38995bb&page=${page}&pageSize=${props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${
+      props.country
+    }&category=${props.category}&apiKey=8147ba6e2b6d46cbb9d6d460e38995bb&page=${
+      page + 1
+    }&pageSize=${props.pageSize}`;
+    setPage(page + 1);
     let data = await fetch(url);
     let parsedData = await data.json();
-    this.setState({
-      articles: articles.concat(parsedData.articles),
-      totalResults: parsedData.totalResults,
-    });
+    setArticles(articles.concat(parsedData.articles));
+    setTotalResults(parsedData.totalResults);
   };
 
   return (
     <div className="container mt-3">
-      <h2 className="text-center">Top Headlines</h2>
-      {this.state.loading && <Spinner />}
+      <h1
+        className="text-center"
+        style={{ margin: "35px 0px", marginTop: "80px" }}
+      >
+        Top {capitalizeFirstLetter(props.category)} Headlines
+      </h1>
+      {loading && <Spinner />}
       <InfiniteScroll
         dataLength={articles.length}
         next={fetchMoreData}
-        hasMore={articles.length !== this.state.totalResults}
+        hasMore={articles.length !== totalResults}
         loader={<Spinner />}
       >
         <div className="row">
