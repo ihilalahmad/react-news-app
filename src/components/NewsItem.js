@@ -2,10 +2,11 @@ import React, { Component } from "react";
 
 export class NewsItem extends Component {
   render() {
-    let { title, description, imageUrl, newsUrl } = this.props;
+    let { title, description, imageUrl, newsUrl, publishedAt, source } =
+      this.props;
     return (
       <div className="mt-2">
-        <div className="card" style={{ width: "18rem" }}>
+        <div className="card">
           <img
             src={
               imageUrl
@@ -15,12 +16,21 @@ export class NewsItem extends Component {
             className="card-img-top"
             alt="..."
           />
+
           <div className="card-body">
+            <h6>
+              Source: <span class="badge rounded-pill bg-danger">{source}</span>
+            </h6>
             <h5 className="card-title">{title}...</h5>
-            <p className="card-text">{description}</p>
+            <p className="card-text">{description}...</p>
             <a href={newsUrl} target="_blank" className="btn btn-sm btn-dark">
               Read more
             </a>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">
+              {new Date(publishedAt).toUTCString()}
+            </small>
           </div>
         </div>
       </div>
